@@ -6,6 +6,7 @@ TagManager:
   tags:
   - WeaponPickup
   - Projectile
+  - PokeballPickup
   layers:
   - Default
   - TransparentFX
