@@ -1,30 +1,30 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehavi
 {
     public int scoreToWin = 3;
-    public GameObject winScreen; // Référence à notre écran de victoire
+    public GameObject winScreen; // Rï¿½fï¿½rence ï¿½ notre ï¿½cran de victoire
 
     private int currentScore = 0;
 
     void Start()
     {
-        // On s'assure que l'écran de victoire est caché au début
+        // On s'assure que l'ï¿½cran de victoire est cachï¿½ au dï¿½but
         if (winScreen != null)
         {
             winScreen.SetActive(false);
         }
     }
 
-    // Cette fonction sera appelée par chaque cible lorsqu'elle est touchée
+    // Cette fonction sera appelï¿½e par chaque cible lorsqu'elle est touchï¿½e
     public void TargetHit()
     {
         currentScore++;
-        Debug.Log("Cible touchée ! Score : " + currentScore);
+        Debug.Log("Cible touchï¿½e ! Score : " + currentScore);
 
         if (currentScore >= scoreToWin)
         {
-            // On a gagné !
+            // On a gagnï¿½ !
             ShowWinScreen();
         }
     }
@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
         {
             winScreen.SetActive(true);
 
-            // On libère le curseur de la souris pour pouvoir cliquer sur l'UI
+            // On libï¿½re le curseur de la souris pour pouvoir cliquer sur l'UI
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
