@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GameManager : MonoBehavi
+public class GameManager : MonoBehaviour
 {
     public int scoreToWin = 3;
     public GameObject winScreen; // R�f�rence � notre �cran de victoire
