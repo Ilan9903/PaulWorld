@@ -21,7 +21,8 @@ public class PlayerController : MonoBehaviour
     [Header("Prefabs Visuels")]
     public GameObject weaponInHandPrefab; // Le modèle 3D de l'arme à tenir
     public GameObject pokeballInHandPrefab; // Le modèle de la sphère à tenir
-    
+    public float throwForce = 10f;
+
     // AJOUTÉ : Header et variables manquantes pour le tir
     [Header("Weapon & Projectiles")]
     public GameObject weaponProjectilePrefab; // Le prefab de la balle/laser
@@ -45,6 +46,10 @@ public class PlayerController : MonoBehaviour
     {
         HandleMovement();
         HandleInput();
+        if (Input.GetMouseButtonDown(1)) // Clic droit
+        {
+            ThrowPokeball();
+        }
     }
 
     void HandleMovement()
@@ -90,6 +95,23 @@ public class PlayerController : MonoBehaviour
         Transform firePointToUse = (weaponFirePoint != null) ? weaponFirePoint : throwPoint;
         Instantiate(weaponProjectilePrefab, firePointToUse.position, firePointToUse.rotation);
     }
+    
+    void ThrowPokeball()
+    {
+        if (pokeballInHandPrefab != null && throwPoint != null)
+        {
+            GameObject pokeball = Instantiate(pokeballInHandPrefab, throwPoint.position, throwPoint.rotation);
+            Rigidbody rb = pokeball.GetComponent<Rigidbody>();
+            if (rb != null)
+            {
+                rb.AddForce(throwPoint.forward * throwForce, ForceMode.Impulse);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("PokeballPrefab ou ThrowPoint non assigné !");
+        }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -97,7 +119,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Arme ramassée !");
             hasWeapon = true;
-            
+
             // CORRIGÉ : Méthode plus robuste pour instancier et parenter
             equippedWeapon = Instantiate(weaponInHandPrefab);
             equippedWeapon.transform.SetParent(rightHandHolder, false);
@@ -110,7 +132,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Sphère de capture ramassée !");
             hasPokeball = true;
-            
+
             // CORRIGÉ : Méthode plus robuste pour instancier et parenter
             equippedPokeball = Instantiate(pokeballInHandPrefab);
             equippedPokeball.transform.SetParent(rightHandHolder, false);
