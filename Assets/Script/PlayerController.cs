@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // --- MOUVEMENT (votre code existant) ---
+    // --- MOUVEMENT ---
     public float moveSpeed = 5.0f;
     public float gravity = -9.81f;
     private CharacterController controller;
@@ -12,22 +12,27 @@ public class PlayerController : MonoBehaviour
     public float lookXLimit = 60.0f;
     private float rotationX = 0;
 
-    // --- NOUVEAU : GESTION DES MAINS ET ÉQUIPEMENT ---
+    // --- GESTION DES MAINS ET ÉQUIPEMENT ---
     [Header("Hand & Equipment")]
     public Transform rightHandHolder;
     public Transform leftHandHolder;
     public Transform throwPoint; // Point de départ pour la sphère lancée
 
-    [Header("Prefabs")]
+    [Header("Prefabs Visuels")]
     public GameObject weaponInHandPrefab; // Le modèle 3D de l'arme à tenir
     public GameObject pokeballInHandPrefab; // Le modèle de la sphère à tenir
+    
+    // AJOUTÉ : Header et variables manquantes pour le tir
+    [Header("Weapon & Projectiles")]
+    public GameObject weaponProjectilePrefab; // Le prefab de la balle/laser
+    public Transform weaponFirePoint; // Un point au bout du canon de l'arme visuelle
 
     private GameObject equippedWeapon;
     private GameObject equippedPokeball;
 
     // États du joueur
     private bool hasWeapon = false;
-    private bool hasPokeball = false; // Note : on considère qu'on ne peut avoir une pokeball que si on a déjà une arme
+    private bool hasPokeball = false;
 
     void Start()
     {
@@ -38,10 +43,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // --- GESTION DU MOUVEMENT ---
-        HandleMovement(); // Votre code de mouvement est ici
-
-        // --- GESTION DES ACTIONS ---
+        HandleMovement();
         HandleInput();
     }
 
@@ -67,43 +69,56 @@ public class PlayerController : MonoBehaviour
     {
         if (hasWeapon && hasPokeball)
         {
-            // MODE 2 MAINS : Arme à gauche, Sphère à droite
             if (Input.GetButtonDown("Fire1")) { ShootWeapon(); } // Clic Gauche
             if (Input.GetButtonDown("Fire2")) { /* On fera ça au Jour 2 */ } // Clic Droit
         }
         else if (hasWeapon)
         {
-            // MODE ARME SEULE : Arme à droite
             if (Input.GetButtonDown("Fire2")) { ShootWeapon(); } // Clic Droit
         }
     }
 
     void ShootWeapon()
     {
-        Debug.Log("PAN ! (Logique de tir à implémenter)");
-        // On créera le projectile à la Tâche 6
+        if (weaponProjectilePrefab == null)
+        {
+            Debug.LogError("Le prefab du projectile d'arme n'est pas assigné !");
+            return;
+        }
+
+        // On utilise le point de tir de l'arme s'il est défini, sinon celui de la caméra par défaut
+        Transform firePointToUse = (weaponFirePoint != null) ? weaponFirePoint : throwPoint;
+        Instantiate(weaponProjectilePrefab, firePointToUse.position, firePointToUse.rotation);
     }
 
-    // Détecter les pickups
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("WeaponPickup") && !hasWeapon)
         {
             Debug.Log("Arme ramassée !");
             hasWeapon = true;
-            // Instancier l'arme et la mettre dans la main droite
-            equippedWeapon = Instantiate(weaponInHandPrefab, rightHandHolder.position, rightHandHolder.rotation, rightHandHolder);
+            
+            // CORRIGÉ : Méthode plus robuste pour instancier et parenter
+            equippedWeapon = Instantiate(weaponInHandPrefab);
+            equippedWeapon.transform.SetParent(rightHandHolder, false);
+            equippedWeapon.transform.localPosition = Vector3.zero;
+            equippedWeapon.transform.localRotation = Quaternion.identity;
+
             Destroy(other.gameObject);
         }
         else if (other.CompareTag("PokeballPickup") && hasWeapon && !hasPokeball)
         {
             Debug.Log("Sphère de capture ramassée !");
             hasPokeball = true;
-            // Instancier la sphère et la mettre dans la main droite
-            equippedPokeball = Instantiate(pokeballInHandPrefab, rightHandHolder.position, rightHandHolder.rotation, rightHandHolder);
+            
+            // CORRIGÉ : Méthode plus robuste pour instancier et parenter
+            equippedPokeball = Instantiate(pokeballInHandPrefab);
+            equippedPokeball.transform.SetParent(rightHandHolder, false);
+            equippedPokeball.transform.localPosition = Vector3.zero;
+            equippedPokeball.transform.localRotation = Quaternion.identity;
 
             // On déplace l'arme dans la main gauche
-            equippedWeapon.transform.SetParent(leftHandHolder, false); // false pour garder la taille locale
+            equippedWeapon.transform.SetParent(leftHandHolder, false);
             equippedWeapon.transform.localPosition = Vector3.zero;
             equippedWeapon.transform.localRotation = Quaternion.identity;
 
