@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
     }
 
@@ -116,45 +116,47 @@ public class PlayerController : MonoBehaviour
     // --- MODIFIÉ : Nouvelle logique pour le ramassage ---
     private void OnTriggerEnter(Collider other)
     {
-        // RAMASSAGE DE L'ARME
+        // Tente de ramasser une arme
         if (other.CompareTag("WeaponPickup") && !hasWeapon)
         {
+            // Détruit le pickup au sol
+            Destroy(other.gameObject);
             hasWeapon = true;
-            
-            // Si on a déjà une sphère, on la déplace à gauche
+
+            // Si on a déjà une sphère en main droite, on la déplace à gauche
             if (hasPokeballInHand)
             {
-                equippedPokeball.transform.SetParent(leftHandHolder, false);
+                equippedPokeball.transform.SetParent(leftHandHolder);
                 equippedPokeball.transform.localPosition = Vector3.zero;
                 equippedPokeball.transform.localRotation = Quaternion.identity;
             }
-            
-            // On équipe la nouvelle arme dans la main droite
-            equippedWeapon = Instantiate(weaponInHandPrefab, rightHandHolder);
+
+            // On crée la nouvelle arme et on la place dans la main droite
+            equippedWeapon = Instantiate(weaponInHandPrefab);
+            equippedWeapon.transform.SetParent(rightHandHolder);
             equippedWeapon.transform.localPosition = Vector3.zero;
             equippedWeapon.transform.localRotation = Quaternion.identity;
-
-            Destroy(other.gameObject);
         }
-        // RAMASSAGE DE LA SPHÈRE
+        // Tente de ramasser une sphère
         else if (other.CompareTag("PokeballPickup") && !hasPokeballInHand)
         {
+            // Détruit le pickup au sol
+            Destroy(other.gameObject);
             hasPokeballInHand = true;
 
-            // Si on a déjà une arme, on la déplace à gauche
+            // Si on a déjà une arme en main droite, on la déplace à gauche
             if (hasWeapon)
             {
-                equippedWeapon.transform.SetParent(leftHandHolder, false);
+                equippedWeapon.transform.SetParent(leftHandHolder);
                 equippedWeapon.transform.localPosition = Vector3.zero;
                 equippedWeapon.transform.localRotation = Quaternion.identity;
             }
-            
-            // On équipe la nouvelle sphère dans la main droite
-            equippedPokeball = Instantiate(pokeballInHandPrefab, rightHandHolder);
+
+            // On crée la nouvelle sphère et on la place dans la main droite
+            equippedPokeball = Instantiate(pokeballInHandPrefab);
+            equippedPokeball.transform.SetParent(rightHandHolder);
             equippedPokeball.transform.localPosition = Vector3.zero;
             equippedPokeball.transform.localRotation = Quaternion.identity;
-            
-            Destroy(other.gameObject);
         }
     }
 }
