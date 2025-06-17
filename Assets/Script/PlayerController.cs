@@ -1,100 +1,113 @@
 using UnityEngine;
 
-// On n'a plus besoin de "using UnityEngine.InputSystem;"
-[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
-    // --- Variables pour le mouvement ---
+    // --- MOUVEMENT (votre code existant) ---
     public float moveSpeed = 5.0f;
     public float gravity = -9.81f;
-
     private CharacterController controller;
     private Vector3 velocity;
-
-    // --- Variables pour la cam�ra ---
     public Camera playerCamera;
     public float lookSpeed = 2.0f;
-    public float lookXLimit = 60.0f; // Limite pour regarder en haut/bas
-
+    public float lookXLimit = 60.0f;
     private float rotationX = 0;
 
-    // --- Variables pour l'arme ---
-    public Transform weaponHolder;
-    public GameObject projectilePrefab;
-    public Transform firePoint;
+    // --- NOUVEAU : GESTION DES MAINS ET ÉQUIPEMENT ---
+    [Header("Hand & Equipment")]
+    public Transform rightHandHolder;
+    public Transform leftHandHolder;
+    public Transform throwPoint; // Point de départ pour la sphère lancée
+
+    [Header("Prefabs")]
+    public GameObject weaponInHandPrefab; // Le modèle 3D de l'arme à tenir
+    public GameObject pokeballInHandPrefab; // Le modèle de la sphère à tenir
+
+    private GameObject equippedWeapon;
+    private GameObject equippedPokeball;
+
+    // États du joueur
     private bool hasWeapon = false;
+    private bool hasPokeball = false; // Note : on considère qu'on ne peut avoir une pokeball que si on a déjà une arme
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
-
-        // Bloque le curseur au centre de l'�cran et le cache
-        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
     void Update()
     {
-        // --- Mouvement du joueur (avec Input.GetAxis) ---
-        float moveX = Input.GetAxis("Horizontal"); // Q/D ou A/D
-        float moveZ = Input.GetAxis("Vertical");   // Z/S ou W/S
+        // --- GESTION DU MOUVEMENT ---
+        HandleMovement(); // Votre code de mouvement est ici
 
+        // --- GESTION DES ACTIONS ---
+        HandleInput();
+    }
+
+    void HandleMovement()
+    {
+        float moveX = Input.GetAxis("Horizontal");
+        float moveZ = Input.GetAxis("Vertical");
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
         controller.Move(move * moveSpeed * Time.deltaTime);
 
-        // --- Gravit� ---
-        if (controller.isGrounded && velocity.y < 0)
-        {
-            velocity.y = -2f;
-        }
+        if (controller.isGrounded && velocity.y < 0) { velocity.y = -2f; }
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-        // --- Rotation de la cam�ra (Mouse Look avec Input.GetAxis) ---
         float lookY = Input.GetAxis("Mouse X") * lookSpeed;
         rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
-
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
         transform.rotation *= Quaternion.Euler(0, lookY, 0);
-
-        // --- Gestion du tir ---
-        // Si on a l'arme et qu'on clique
-        if (hasWeapon && Input.GetButtonDown("Fire1")) // "Fire1" est le clic gauche par d�faut
-        {
-            HandleShooting();
-        }
     }
 
-    void HandleShooting()
+    void HandleInput()
     {
-        if (projectilePrefab != null && firePoint != null)
+        if (hasWeapon && hasPokeball)
         {
-            // On cr�e une nouvelle instance du projectile � la position et rotation du firePoint
-            Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+            // MODE 2 MAINS : Arme à gauche, Sphère à droite
+            if (Input.GetButtonDown("Fire1")) { ShootWeapon(); } // Clic Gauche
+            if (Input.GetButtonDown("Fire2")) { /* On fera ça au Jour 2 */ } // Clic Droit
         }
-        else
+        else if (hasWeapon)
         {
-            Debug.LogError("Projectile Prefab ou Fire Point non assign� !");
+            // MODE ARME SEULE : Arme à droite
+            if (Input.GetButtonDown("Fire2")) { ShootWeapon(); } // Clic Droit
         }
     }
 
-    // --- Ramassage de l'arme (ne change pas) ---
+    void ShootWeapon()
+    {
+        Debug.Log("PAN ! (Logique de tir à implémenter)");
+        // On créera le projectile à la Tâche 6
+    }
+
+    // Détecter les pickups
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("WeaponPickup") && !hasWeapon)
         {
-            Debug.Log("Arme ramass�e !");
+            Debug.Log("Arme ramassée !");
             hasWeapon = true;
+            // Instancier l'arme et la mettre dans la main droite
+            equippedWeapon = Instantiate(weaponInHandPrefab, rightHandHolder.position, rightHandHolder.rotation, rightHandHolder);
+            Destroy(other.gameObject);
+        }
+        else if (other.CompareTag("PokeballPickup") && hasWeapon && !hasPokeball)
+        {
+            Debug.Log("Sphère de capture ramassée !");
+            hasPokeball = true;
+            // Instancier la sphère et la mettre dans la main droite
+            equippedPokeball = Instantiate(pokeballInHandPrefab, rightHandHolder.position, rightHandHolder.rotation, rightHandHolder);
 
-            other.transform.SetParent(weaponHolder);
-            other.transform.localPosition = Vector3.zero;
-            other.transform.localRotation = Quaternion.identity;
+            // On déplace l'arme dans la main gauche
+            equippedWeapon.transform.SetParent(leftHandHolder, false); // false pour garder la taille locale
+            equippedWeapon.transform.localPosition = Vector3.zero;
+            equippedWeapon.transform.localRotation = Quaternion.identity;
 
-            // On d�sactive son trigger pour qu'elle devienne un objet solide attach� au joueur
-            other.GetComponent<Collider>().enabled = false;
-
-            other.gameObject.name = "ArmeEquipee";
+            Destroy(other.gameObject);
         }
     }
 }
