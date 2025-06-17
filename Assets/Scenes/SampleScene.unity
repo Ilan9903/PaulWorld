@@ -119,6 +119,28 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &97080758 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5902061517771194420, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
+  m_PrefabInstance: {fileID: 1993068757}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &97080766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97080758}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fafe4d760d1074d40bbf3e84eeac6f1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wanderRadius: 20
+  wanderTimer: 5
+  idleTimer: 3
+  maxHealth: 100
+  healthSlider: {fileID: 769989199}
 --- !u!1 &166659220
 GameObject:
   m_ObjectHideFlags: 0
@@ -319,7 +341,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5902061517771194420, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 323064567}
   m_SourcePrefab: {fileID: 100100000, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
 --- !u!114 &271641722 stripped
 MonoBehaviour:
@@ -364,6 +389,28 @@ Transform:
   - {fileID: 1723762924}
   m_Father: {fileID: 330585546}
   m_LocalEulerAnglesHint: {x: 5, y: 0, z: 0}
+--- !u!1 &323064559 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5902061517771194420, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
+  m_PrefabInstance: {fileID: 261679463}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &323064567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323064559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fafe4d760d1074d40bbf3e84eeac6f1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wanderRadius: 20
+  wanderTimer: 5
+  idleTimer: 3
+  maxHealth: 100
+  healthSlider: {fileID: 2035995628}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1244,7 +1291,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5902061517771194420, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1868688353}
   m_SourcePrefab: {fileID: 100100000, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
 --- !u!1001 &1343129242
 PrefabInstance:
@@ -1313,7 +1363,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5902061517771194420, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1833010637}
   m_SourcePrefab: {fileID: 100100000, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
 --- !u!1 &1504875206
 GameObject:
@@ -1585,6 +1638,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &1833010629 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5902061517771194420, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
+  m_PrefabInstance: {fileID: 1343129242}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1833010637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1833010629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fafe4d760d1074d40bbf3e84eeac6f1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wanderRadius: 20
+  wanderTimer: 5
+  idleTimer: 3
+  maxHealth: 100
+  healthSlider: {fileID: 271641722}
 --- !u!1 &1851340264
 GameObject:
   m_ObjectHideFlags: 0
@@ -1649,6 +1724,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1868688345 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5902061517771194420, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
+  m_PrefabInstance: {fileID: 1206065350}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1868688353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868688345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fafe4d760d1074d40bbf3e84eeac6f1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wanderRadius: 20
+  wanderTimer: 5
+  idleTimer: 3
+  maxHealth: 100
+  healthSlider: {fileID: 487983950}
 --- !u!1 &1919366335
 GameObject:
   m_ObjectHideFlags: 0
@@ -1762,7 +1859,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5902061517771194420, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 97080766}
   m_SourcePrefab: {fileID: 100100000, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
 --- !u!114 &2035995628 stripped
 MonoBehaviour:
@@ -1924,6 +2024,14 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4422249839697816236, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
+      propertyPath: m_Height
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4422249839697816236, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5902061517771194420, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
       propertyPath: m_Name
       value: Pokemon1
@@ -1932,8 +2040,7 @@ PrefabInstance:
       propertyPath: m_TargetGraphic
       value: 
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1053988260741311951, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:

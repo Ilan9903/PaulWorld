@@ -116,14 +116,14 @@ public class PlayerController : MonoBehaviour
     // --- MODIFIÉ : Nouvelle logique pour le ramassage ---
     private void OnTriggerEnter(Collider other)
     {
+        bool consumedPickup = false; // Un drapeau pour savoir si on a ramassé quelque chose
+
         // Tente de ramasser une arme
         if (other.CompareTag("WeaponPickup") && !hasWeapon)
         {
-            // Détruit le pickup au sol
-            Destroy(other.gameObject);
+            consumedPickup = true;
             hasWeapon = true;
 
-            // Si on a déjà une sphère en main droite, on la déplace à gauche
             if (hasPokeballInHand)
             {
                 equippedPokeball.transform.SetParent(leftHandHolder);
@@ -131,7 +131,6 @@ public class PlayerController : MonoBehaviour
                 equippedPokeball.transform.localRotation = Quaternion.identity;
             }
 
-            // On crée la nouvelle arme et on la place dans la main droite
             equippedWeapon = Instantiate(weaponInHandPrefab);
             equippedWeapon.transform.SetParent(rightHandHolder);
             equippedWeapon.transform.localPosition = Vector3.zero;
@@ -140,11 +139,9 @@ public class PlayerController : MonoBehaviour
         // Tente de ramasser une sphère
         else if (other.CompareTag("PokeballPickup") && !hasPokeballInHand)
         {
-            // Détruit le pickup au sol
-            Destroy(other.gameObject);
+            consumedPickup = true;
             hasPokeballInHand = true;
 
-            // Si on a déjà une arme en main droite, on la déplace à gauche
             if (hasWeapon)
             {
                 equippedWeapon.transform.SetParent(leftHandHolder);
@@ -152,11 +149,16 @@ public class PlayerController : MonoBehaviour
                 equippedWeapon.transform.localRotation = Quaternion.identity;
             }
 
-            // On crée la nouvelle sphère et on la place dans la main droite
             equippedPokeball = Instantiate(pokeballInHandPrefab);
             equippedPokeball.transform.SetParent(rightHandHolder);
             equippedPokeball.transform.localPosition = Vector3.zero;
             equippedPokeball.transform.localRotation = Quaternion.identity;
+        }
+
+        // Si on a consommé un pickup (arme OU sphère), ON DÉTRUIT L'OBJET AU SOL À LA FIN
+        if (consumedPickup)
+        {
+            Destroy(other.gameObject);
         }
     }
 }
