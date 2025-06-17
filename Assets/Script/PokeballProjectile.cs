@@ -2,15 +2,17 @@ using UnityEngine;
 
 public class PokeballProjectile : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void OnCollisionEnter(Collision collision)
     {
+        // On vérifie si on a touché une créature en cherchant son script
+        PokemonController creature = collision.gameObject.GetComponent<PokemonController>();
+        if (creature != null)
+        {
+            // Si c'est bien une créature, on appelle SA fonction pour tenter la capture
+            creature.AttemptToCapture();
+        }
         
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Dans tous les cas, la sphère se détruit après avoir touché quelque chose
+        Destroy(gameObject);
     }
 }

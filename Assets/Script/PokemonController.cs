@@ -1,14 +1,22 @@
 using UnityEngine;
-using UnityEngine.UI; // Important pour utiliser le Slider
+using UnityEngine.AI; // MODIFIÉ : Indispensable pour utiliser le NavMeshAgent
+using UnityEngine.UI; 
 
-public class PokemonController : MonoBehaviour
+[RequireComponent(typeof(NavMeshAgent))] // MODIFIÉ : S'assure que le composant est bien là
+public class PokemonController : MonoBehaviour // CONSERVÉ : Ton nom de classe
 {
+    // --- NOUVEAU : Système de Mouvement avec NavMeshAgent ---
+    [Header("Movement AI")]
+    public float wanderRadius = 20f; // Rayon de la zone où il peut se balader
+    public float wanderTimer = 5f;   // Temps de marche avant une pause
+    public float idleTimer = 3f;     // Temps de pause
 
-    public Vector2 zoneMin; // Coin inférieur gauche de la zone
-    public Vector2 zoneMax; // Coin supérieur droit de la zone
-    public float speed = 2f;
-    private Vector3 targetPosition;
+    private NavMeshAgent agent;
+    private Vector3 startPosition;
+    private float timer;
+    private bool isWandering = true;
 
+    // --- CONSERVÉ : Logique de Vie ---
     [Header("Health")]
     public float maxHealth = 100f;
     public Slider healthSlider; // Référence à notre barre de vie
@@ -16,8 +24,12 @@ public class PokemonController : MonoBehaviour
 
     void Start()
     {
-        SetNewRandomTarget();
+        // MODIFIÉ : Initialisation du NavMeshAgent
+        agent = GetComponent<NavMeshAgent>();
+        startPosition = transform.position; // Mémorise son point de départ
+        timer = wanderTimer;
 
+        // CONSERVÉ : Initialisation de la vie
         currentHealth = maxHealth;
         if(healthSlider != null) 
         {
@@ -28,21 +40,61 @@ public class PokemonController : MonoBehaviour
     
     void Update()
     {
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
+        // MODIFIÉ : Toute la logique de déplacement est remplacée par celle-ci
+        timer += Time.deltaTime;
 
-        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        if (isWandering)
         {
-            SetNewRandomTarget();
+            // Si le temps de marche est écoulé, on fait une pause
+            if (timer >= wanderTimer)
+            {
+                agent.isStopped = true; // Arrête le mouvement
+                isWandering = false;
+                timer = 0;
+            }
+        }
+        else
+        {
+            // Si le temps de pause est écoulé, on trouve une nouvelle destination
+            if (timer >= idleTimer)
+            {
+                Vector3 newPos = RandomNavSphere(startPosition, wanderRadius, -1);
+                agent.SetDestination(newPos);
+                agent.isStopped = false; // Reprend le mouvement
+                isWandering = true;
+                timer = 0;
+            }
         }
     }
 
-    void SetNewRandomTarget()
+    // NOUVEAU : Fonction helper pour trouver un point sur le NavMesh
+    public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
     {
-        float x = Random.Range(zoneMin.x, zoneMax.x);
-        float y = Random.Range(zoneMin.y, zoneMax.y);
-        targetPosition = new Vector3(x, y, transform.position.z);
+        Vector3 randDirection = Random.insideUnitSphere * dist;
+        randDirection += origin;
+        NavMeshHit navHit;
+        NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
+        return navHit.position;
     }
 
+    // MODIFIÉ : Condition de capture mise à jour
+    public void AttemptToCapture()
+    {
+        // Condition : la vie doit être inférieure ou égale à 30
+        if (currentHealth <= 30)
+        {
+            Debug.Log("Capture Réussie !");
+            // La ligne ci-dessous sera pour plus tard, quand PlayerStats existera
+            // FindObjectOfType<PlayerStats>().AddXp(50); 
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.Log("Capture Échouée ! La créature est encore trop forte (" + currentHealth + " PV).");
+        }
+    }
+
+    // CONSERVÉ : Ta logique de dégâts est parfaite
     public void TakeDamage(float amount)
     {
         currentHealth -= amount;
@@ -58,6 +110,7 @@ public class PokemonController : MonoBehaviour
         }
     }
 
+    // CONSERVÉ : Ta logique de mort est parfaite
     void Die()
     {
         Debug.Log(gameObject.name + " est vaincu.");

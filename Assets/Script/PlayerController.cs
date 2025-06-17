@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    // --- MOUVEMENT ---
+    // --- MOUVEMENT (inchangé) ---
     public float moveSpeed = 5.0f;
     public float gravity = -9.81f;
     private CharacterController controller;
@@ -12,28 +12,27 @@ public class PlayerController : MonoBehaviour
     public float lookXLimit = 60.0f;
     private float rotationX = 0;
 
-    // --- GESTION DES MAINS ET ÉQUIPEMENT ---
+    // --- GESTION DES MAINS ET ÉQUIPEMENT (inchangé) ---
     [Header("Hand & Equipment")]
     public Transform rightHandHolder;
     public Transform leftHandHolder;
-    public Transform throwPoint; // Point de départ pour la sphère lancée
+    public Transform throwPoint;
 
-    [Header("Prefabs Visuels")]
-    public GameObject weaponInHandPrefab; // Le modèle 3D de l'arme à tenir
-    public GameObject pokeballInHandPrefab; // Le modèle de la sphère à tenir
-    public float throwForce = 10f;
+    [Header("Prefabs Visuels (inchangé)")]
+    public GameObject weaponInHandPrefab;
+    public GameObject pokeballInHandPrefab;
 
-    // AJOUTÉ : Header et variables manquantes pour le tir
-    [Header("Weapon & Projectiles")]
-    public GameObject weaponProjectilePrefab; // Le prefab de la balle/laser
-    public Transform weaponFirePoint; // Un point au bout du canon de l'arme visuelle
+    [Header("Weapon & Projectiles (inchangé)")]
+    public GameObject weaponProjectilePrefab;
+    public Transform weaponFirePoint;
+    public GameObject pokeballProjectilePrefab;
+    public float throwForce = 15f;
 
+    // --- OBJETS & ÉTATS (inchangé) ---
     private GameObject equippedWeapon;
     private GameObject equippedPokeball;
-
-    // États du joueur
     private bool hasWeapon = false;
-    private bool hasPokeball = false;
+    private bool hasPokeballInHand = false;
 
     void Start()
     {
@@ -45,11 +44,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         HandleMovement();
-        HandleInput();
-        if (Input.GetMouseButtonDown(1)) // Clic droit
-        {
-            ThrowPokeball();
-        }
+        HandleInput(); // Cette fonction est maintenant beaucoup plus intelligente
     }
 
     void HandleMovement()
@@ -70,80 +65,95 @@ public class PlayerController : MonoBehaviour
         transform.rotation *= Quaternion.Euler(0, lookY, 0);
     }
 
+    // --- MODIFIÉ : Nouvelle logique pour les actions ---
     void HandleInput()
     {
-        if (hasWeapon && hasPokeball)
+        // Rappel: Fire1 = Clic Gauche, Fire2 = Clic Droit
+        if (hasWeapon && hasPokeballInHand)
         {
-            if (Input.GetButtonDown("Fire1")) { ShootWeapon(); } // Clic Gauche
-            if (Input.GetButtonDown("Fire2")) { /* On fera ça au Jour 2 */ } // Clic Droit
+            // ÉTAT 3 : DEUX MAINS
+            if (Input.GetButtonDown("Fire1")) { ShootWeapon(); }      // Clic Gauche : TIRE avec l'arme (main gauche)
+            if (Input.GetButtonDown("Fire2")) { ThrowPokeball(); }    // Clic Droit : LANCE la sphère (main droite)
         }
         else if (hasWeapon)
         {
-            if (Input.GetButtonDown("Fire2")) { ShootWeapon(); } // Clic Droit
+            // ÉTAT 1 : ARME SEULE (main droite)
+            if (Input.GetButtonDown("Fire1")) { ShootWeapon(); }      // Clic Gauche : TIRE avec l'arme
+        }
+        else if (hasPokeballInHand)
+        {
+            // ÉTAT 2 : SPHÈRE SEULE (main droite)
+            if (Input.GetButtonDown("Fire1")) { ThrowPokeball(); }    // Clic Gauche : LANCE la sphère
+        }
+    }
+
+    void ThrowPokeball()
+    {
+        if (pokeballProjectilePrefab == null) return;
+        
+        GameObject ball = Instantiate(pokeballProjectilePrefab, throwPoint.position, throwPoint.rotation);
+        ball.GetComponent<Rigidbody>().AddForce(throwPoint.forward * throwForce, ForceMode.Impulse);
+
+        hasPokeballInHand = false;
+        Destroy(equippedPokeball);
+
+        // Si on a encore une arme, elle repasse dans la main droite
+        if (equippedWeapon != null)
+        {
+            equippedWeapon.transform.SetParent(rightHandHolder, false);
+            equippedWeapon.transform.localPosition = Vector3.zero;
+            equippedWeapon.transform.localRotation = Quaternion.identity;
         }
     }
 
     void ShootWeapon()
     {
-        if (weaponProjectilePrefab == null)
-        {
-            Debug.LogError("Le prefab du projectile d'arme n'est pas assigné !");
-            return;
-        }
-
-        // On utilise le point de tir de l'arme s'il est défini, sinon celui de la caméra par défaut
+        if (weaponProjectilePrefab == null) return;
         Transform firePointToUse = (weaponFirePoint != null) ? weaponFirePoint : throwPoint;
         Instantiate(weaponProjectilePrefab, firePointToUse.position, firePointToUse.rotation);
     }
-    
-    void ThrowPokeball()
-    {
-        if (pokeballInHandPrefab != null && throwPoint != null)
-        {
-            GameObject pokeball = Instantiate(pokeballInHandPrefab, throwPoint.position, throwPoint.rotation);
-            Rigidbody rb = pokeball.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.AddForce(throwPoint.forward * throwForce, ForceMode.Impulse);
-            }
-        }
-        else
-        {
-            Debug.LogWarning("PokeballPrefab ou ThrowPoint non assigné !");
-        }
-    }
 
+    // --- MODIFIÉ : Nouvelle logique pour le ramassage ---
     private void OnTriggerEnter(Collider other)
     {
+        // RAMASSAGE DE L'ARME
         if (other.CompareTag("WeaponPickup") && !hasWeapon)
         {
-            Debug.Log("Arme ramassée !");
             hasWeapon = true;
-
-            // CORRIGÉ : Méthode plus robuste pour instancier et parenter
-            equippedWeapon = Instantiate(weaponInHandPrefab);
-            equippedWeapon.transform.SetParent(rightHandHolder, false);
+            
+            // Si on a déjà une sphère, on la déplace à gauche
+            if (hasPokeballInHand)
+            {
+                equippedPokeball.transform.SetParent(leftHandHolder, false);
+                equippedPokeball.transform.localPosition = Vector3.zero;
+                equippedPokeball.transform.localRotation = Quaternion.identity;
+            }
+            
+            // On équipe la nouvelle arme dans la main droite
+            equippedWeapon = Instantiate(weaponInHandPrefab, rightHandHolder);
             equippedWeapon.transform.localPosition = Vector3.zero;
             equippedWeapon.transform.localRotation = Quaternion.identity;
 
             Destroy(other.gameObject);
         }
-        else if (other.CompareTag("PokeballPickup") && hasWeapon && !hasPokeball)
+        // RAMASSAGE DE LA SPHÈRE
+        else if (other.CompareTag("PokeballPickup") && !hasPokeballInHand)
         {
-            Debug.Log("Sphère de capture ramassée !");
-            hasPokeball = true;
+            hasPokeballInHand = true;
 
-            // CORRIGÉ : Méthode plus robuste pour instancier et parenter
-            equippedPokeball = Instantiate(pokeballInHandPrefab);
-            equippedPokeball.transform.SetParent(rightHandHolder, false);
+            // Si on a déjà une arme, on la déplace à gauche
+            if (hasWeapon)
+            {
+                equippedWeapon.transform.SetParent(leftHandHolder, false);
+                equippedWeapon.transform.localPosition = Vector3.zero;
+                equippedWeapon.transform.localRotation = Quaternion.identity;
+            }
+            
+            // On équipe la nouvelle sphère dans la main droite
+            equippedPokeball = Instantiate(pokeballInHandPrefab, rightHandHolder);
             equippedPokeball.transform.localPosition = Vector3.zero;
             equippedPokeball.transform.localRotation = Quaternion.identity;
-
-            // On déplace l'arme dans la main gauche
-            equippedWeapon.transform.SetParent(leftHandHolder, false);
-            equippedWeapon.transform.localPosition = Vector3.zero;
-            equippedWeapon.transform.localRotation = Quaternion.identity;
-
+            
             Destroy(other.gameObject);
         }
     }
