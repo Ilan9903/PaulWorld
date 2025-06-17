@@ -615,6 +615,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4531647645350894132, guid: ce79b346c309df846a0d2b1f1fa6cf5c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 78e8e7a8b5b25154491702988f63cdfa, type: 2}
     - target: {fileID: 4653643318929515744, guid: ce79b346c309df846a0d2b1f1fa6cf5c, type: 3}
       propertyPath: m_Name
       value: WeaponPickup
@@ -1756,6 +1760,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3217629642885345084, guid: 1366007744819824cbce04fcb549466d, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: edbf09c2e737fa34dab886eb4a3777fa, type: 2}
     - target: {fileID: 6613855032670857236, guid: 1366007744819824cbce04fcb549466d, type: 3}
       propertyPath: m_Name
       value: PokeballPickup
