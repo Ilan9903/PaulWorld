@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviour
     public GameObject weaponProjectilePrefab;
     public Transform weaponFirePoint;
     public GameObject pokeballProjectilePrefab;
-    public float throwForce = 15f;
+    public float throwForce = 20f;
 
     // --- OBJETS & ÉTATS (inchangé) ---
     private GameObject equippedWeapon;
