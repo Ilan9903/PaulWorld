@@ -1173,6 +1173,63 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -3827478758199882477, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
+--- !u!1001 &990782728
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3432909805440363576, guid: d127ff659d8288147b47bb2f1fb5f197, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 86.57
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432909805440363576, guid: d127ff659d8288147b47bb2f1fb5f197, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432909805440363576, guid: d127ff659d8288147b47bb2f1fb5f197, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 84.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432909805440363576, guid: d127ff659d8288147b47bb2f1fb5f197, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.70385194
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432909805440363576, guid: d127ff659d8288147b47bb2f1fb5f197, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.71034676
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432909805440363576, guid: d127ff659d8288147b47bb2f1fb5f197, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432909805440363576, guid: d127ff659d8288147b47bb2f1fb5f197, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432909805440363576, guid: d127ff659d8288147b47bb2f1fb5f197, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90.526
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432909805440363576, guid: d127ff659d8288147b47bb2f1fb5f197, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3432909805440363576, guid: d127ff659d8288147b47bb2f1fb5f197, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5902061517771194420, guid: d127ff659d8288147b47bb2f1fb5f197, type: 3}
+      propertyPath: m_Name
+      value: Sudowoodu
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d127ff659d8288147b47bb2f1fb5f197, type: 3}
 --- !u!1 &1011466918
 GameObject:
   m_ObjectHideFlags: 0
@@ -1788,7 +1845,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4422249839697816236, guid: fef9f85b18d3c8a42a439132c106d148, type: 3}
       propertyPath: m_Height
-      value: 1
+      value: 5.8
       objectReference: {fileID: 0}
     - target: {fileID: 4422249839697816236, guid: fef9f85b18d3c8a42a439132c106d148, type: 3}
       propertyPath: m_Radius
@@ -1796,15 +1853,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4422249839697816236, guid: fef9f85b18d3c8a42a439132c106d148, type: 3}
       propertyPath: m_Center.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4422249839697816236, guid: fef9f85b18d3c8a42a439132c106d148, type: 3}
       propertyPath: m_Center.y
-      value: 1
+      value: -2.4
       objectReference: {fileID: 0}
     - target: {fileID: 4422249839697816236, guid: fef9f85b18d3c8a42a439132c106d148, type: 3}
       propertyPath: m_Center.z
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4422249839697816236, guid: fef9f85b18d3c8a42a439132c106d148, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4422249839697816236, guid: fef9f85b18d3c8a42a439132c106d148, type: 3}
       propertyPath: m_IncludeLayers.m_Bits
@@ -1824,7 +1885,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7996748656613773020, guid: fef9f85b18d3c8a42a439132c106d148, type: 3}
       propertyPath: m_Height
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7996748656613773020, guid: fef9f85b18d3c8a42a439132c106d148, type: 3}
       propertyPath: m_Radius
@@ -2187,7 +2248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6281326974046229708, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_Name
-      value: pokeball
+      value: Pokeball
       objectReference: {fileID: 0}
     - target: {fileID: 6281326974046229708, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_TagString
@@ -2358,6 +2419,7 @@ SceneRoots:
   - {fileID: 1851340266}
   - {fileID: 9113038690646040189}
   - {fileID: 1770722323}
+  - {fileID: 990782728}
   - {fileID: 1993068757}
   - {fileID: 1206065350}
   - {fileID: 261679463}
