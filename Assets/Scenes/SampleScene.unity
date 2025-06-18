@@ -1135,7 +1135,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3842789283960156563, guid: dbd229079a3b575489b6dae6f48c857e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.24526
+      value: 5.85
       objectReference: {fileID: 0}
     - target: {fileID: 3842789283960156563, guid: dbd229079a3b575489b6dae6f48c857e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2171,7 +2171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5902061517771194420, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
       propertyPath: m_Name
-      value: Pokemon1
+      value: Mew
       objectReference: {fileID: 0}
     - target: {fileID: 8211812527265533739, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
       propertyPath: m_TargetGraphic
