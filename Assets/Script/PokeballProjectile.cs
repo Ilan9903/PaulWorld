@@ -1,36 +1,43 @@
 using UnityEngine;
-using System.Collections; // Indispensable pour utiliser les Coroutines
+using System.Collections;
 
 public class PokeballProjectile : MonoBehaviour
 {
-    // Variable publique pour recevoir la référence du pickup depuis le PlayerController
+    // Référence au prefab du pickup, assignée par le PlayerController
     public GameObject pokeballPickupPrefab;
 
-    public float timeBeforeRespawn = 2.0f; // Temps en secondes avant que le pickup réapparaisse
+    // Temps d'attente au sol avant de se transformer en pickup
+    public float timeBeforeRespawn = 2.0f;
 
-    private bool hasHit = false; // Un drapeau pour s'assurer que la logique ne s'exécute qu'une fois
+    private bool hasHit = false;
+
+    // La fonction Start est maintenant VIDE.
+    // PAS DE "Destroy(gameObject, lifeTime);" ICI !
+    void Start()
+    {
+        
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Si on a déjà touché quelque chose, on ne fait plus rien
+        // Si on a déjà touché quelque chose, on ignore les autres collisions (ex: rebonds)
         if (hasHit) return;
-        
-        hasHit = true; // On lève le drapeau
+        hasHit = true;
 
-        // On tente de capturer si on touche une créature
+        // On tente la capture si on a touché une créature
         PokemonController creature = collision.gameObject.GetComponent<PokemonController>();
         if (creature != null)
         {
             creature.AttemptToCapture();
         }
 
-        // On lance la coroutine qui va gérer la transformation en pickup
+        // On lance la coroutine qui gère le reste
         StartCoroutine(TransformIntoPickup());
     }
 
     private IEnumerator TransformIntoPickup()
     {
-        // 1. On arrête la physique pour que la sphère arrête de rouler
+        // Arrête le mouvement de la sphère
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
@@ -39,16 +46,21 @@ public class PokeballProjectile : MonoBehaviour
             rb.isKinematic = true;
         }
         
-        // 2. On attend X secondes
+        // Attend X secondes
         yield return new WaitForSeconds(timeBeforeRespawn);
+        Debug.Log("Attente terminée, je vais créer le pickup !");
 
-        // 3. On fait apparaître le pickup à l'endroit où la sphère a atterri
+        // Fait apparaître le pickup
         if (pokeballPickupPrefab != null)
         {
             Instantiate(pokeballPickupPrefab, transform.position, Quaternion.identity);
         }
+        else
+        {
+            Debug.LogError("La référence au pokeballPickupPrefab est manquante sur le projectile !");
+        }
 
-        // 4. On détruit l'objet projectile (la sphère lancée)
+        // Se détruit LUI-MÊME, à la toute fin
         Destroy(gameObject);
     }
 }
