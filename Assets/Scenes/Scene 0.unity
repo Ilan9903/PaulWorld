@@ -383,38 +383,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 323064567}
   m_SourcePrefab: {fileID: 100100000, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
---- !u!1 &299857693
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 299857694}
-  m_Layer: 0
-  m_Name: WeaponHolder
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &299857694
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299857693}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.043619405, y: 0, z: 0, w: 0.9990483}
-  m_LocalPosition: {x: 0.4, y: -0.4, z: 0.7}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1723762924}
-  m_Father: {fileID: 330585546}
-  m_LocalEulerAnglesHint: {x: 5, y: 0, z: 0}
 --- !u!1 &323064559 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5902061517771194420, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
@@ -528,7 +496,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 299857694}
   - {fileID: 247016721}
   - {fileID: 1688237655}
   - {fileID: 665661206}
@@ -827,7 +794,7 @@ GameObject:
   m_Component:
   - component: {fileID: 665661206}
   m_Layer: 0
-  m_Name: ThrowPoint
+  m_Name: FirePoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1479,11 +1446,11 @@ MonoBehaviour:
   lookXLimit: 60
   rightHandHolder: {fileID: 247016721}
   leftHandHolder: {fileID: 1688237655}
-  firePoint: {fileID: 1723762924}
-  WeaponInHand_Prefab: {fileID: 3876852984604355084, guid: cac299d0f3184c94faa2bf5cbb524de1, type: 3}
-  PokeballInHand_Prefab: {fileID: 1449260130439301992, guid: 675edbec245c3f44a9d4a199dc60a398, type: 3}
-  Projectile: {fileID: 3515355259379754945, guid: de6368cac5177d5439a4b82c09dedc1e, type: 3}
-  pokeballProjectilePrefab: {fileID: 1449260130439301992, guid: 675edbec245c3f44a9d4a199dc60a398, type: 3}
+  firePoint: {fileID: 665661206}
+  weaponVisualPrefab: {fileID: 3876852984604355084, guid: cac299d0f3184c94faa2bf5cbb524de1, type: 3}
+  pokeballVisualPrefab: {fileID: 1449260130439301992, guid: 675edbec245c3f44a9d4a199dc60a398, type: 3}
+  weaponProjectilePrefab: {fileID: 3515355259379754945, guid: de6368cac5177d5439a4b82c09dedc1e, type: 3}
+  pokeballProjectilePrefab: {fileID: 6613855032670857236, guid: 7efb5c3ef130e0f40972c16c56dee08e, type: 3}
   throwForce: 10
   fireRate: 0.5
 --- !u!143 &1504875213
@@ -1542,81 +1509,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 330585546}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1723762923
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1723762924}
-  - component: {fileID: 1723762925}
-  - component: {fileID: 1723762926}
-  m_Layer: 6
-  m_Name: Bullet
-  m_TagString: Projectile
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1723762924
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1723762923}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 299857694}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1723762925
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1723762923}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84902f7f3bfefa145aa82a1c6eaac228, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 20
-  lifeTime: 3
-  damage: 10
---- !u!54 &1723762926
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1723762923}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1001 &1770722323
 PrefabInstance:
   m_ObjectHideFlags: 0
