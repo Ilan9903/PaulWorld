@@ -24,7 +24,7 @@ public class ChangeScene : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Check if the entering collider is the player
-        if (other.CompareTag(playerTag))
+        if (other.CompareTag("Player"))
         {
             canChangeScene = true;
             Debug.Log("Player entered trigger. Press E to change scene.");
@@ -35,7 +35,7 @@ public class ChangeScene : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         // Check if the exiting collider is the player
-        if (other.CompareTag(playerTag))
+        if (other.CompareTag("Player"))
         {
             canChangeScene = false;
             Debug.Log("Player exited trigger. Cannot change scene.");
