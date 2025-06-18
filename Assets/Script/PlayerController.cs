@@ -26,9 +26,9 @@ public class PlayerController : MonoBehaviour
     public Transform firePoint; 
 
     [Header("Item Prefabs")]
-    public GameObject weaponVisualPrefab;       // Le modèle 3D de l'arme
-    public GameObject pokeballVisualPrefab;     // Le modèle 3D de la sphère
-    public GameObject weaponProjectilePrefab;   // La "balle" tirée par l'arme
+    public GameObject WeaponInHand_Prefab;       // Le modèle 3D de l'arme
+    public GameObject PokeballInHand_Prefab;     // Le modèle 3D de la sphère
+    public GameObject Projectile;   // La "balle" tirée par l'arme
     public GameObject pokeballProjectilePrefab; // La sphère à lancer
 
     [Header("Item Stats")]
@@ -161,14 +161,14 @@ public class PlayerController : MonoBehaviour
         if (hasWeaponEquipped && hasPokeballEquipped) // Cas : Les deux objets sont tenus
         {
             // L'arme va à la main gauche
-            currentLeftHandItemVisual = Instantiate(weaponVisualPrefab, leftHandHolder);
+            currentLeftHandItemVisual = Instantiate(WeaponInHand_Prefab, leftHandHolder);
             currentLeftHandItemVisual.tag = "Weapon"; // Assure que le visuel a le bon tag
             // Ajustez ces valeurs pour le positionnement de l'arme dans la main gauche (local à leftHandHolder)
             currentLeftHandItemVisual.transform.localPosition = Vector3.zero;
             currentLeftHandItemVisual.transform.localRotation = Quaternion.identity;
 
             // La Pokeball va à la main droite
-            currentRightHandItemVisual = Instantiate(pokeballVisualPrefab, rightHandHolder);
+            currentRightHandItemVisual = Instantiate(PokeballInHand_Prefab, rightHandHolder);
             currentRightHandItemVisual.tag = "Pokeball"; // Assure que le visuel a le bon tag
             // Ajustez ces valeurs pour le positionnement de la pokeball dans la main droite (local à rightHandHolder)
             currentRightHandItemVisual.transform.localPosition = Vector3.zero;
@@ -183,7 +183,7 @@ public class PlayerController : MonoBehaviour
         else if (hasWeaponEquipped && !hasPokeballEquipped) // Cas : Seule l'arme est tenue
         {
             // L'arme va à la main droite (car c'est le seul objet)
-            currentRightHandItemVisual = Instantiate(weaponVisualPrefab, rightHandHolder);
+            currentRightHandItemVisual = Instantiate(WeaponInHand_Prefab, rightHandHolder);
             currentRightHandItemVisual.tag = "Weapon";
             // Ajustez ces valeurs pour le positionnement de l'arme dans la main droite (local à rightHandHolder)
             currentRightHandItemVisual.transform.localPosition = Vector3.zero;
@@ -197,7 +197,7 @@ public class PlayerController : MonoBehaviour
         else if (!hasWeaponEquipped && hasPokeballEquipped) // Cas : Seule la Pokeball est tenue
         {
             // La Pokeball va à la main droite (car c'est le seul objet)
-            currentRightHandItemVisual = Instantiate(pokeballVisualPrefab, rightHandHolder);
+            currentRightHandItemVisual = Instantiate(PokeballInHand_Prefab, rightHandHolder);
             currentRightHandItemVisual.tag = "Pokeball";
             // Ajustez ces valeurs pour le positionnement de la pokeball dans la main droite (local à rightHandHolder)
             currentRightHandItemVisual.transform.localPosition = Vector3.zero;
@@ -231,7 +231,7 @@ public class PlayerController : MonoBehaviour
         if (hasWeaponEquipped)
         {
             // Instancie le projectile à la position et rotation du firePoint
-            Instantiate(weaponProjectilePrefab, firePoint.position, firePoint.rotation);
+            Instantiate(Projectile, firePoint.position, firePoint.rotation);
             nextFireTime = Time.time + fireRate; // Applique le délai de tir
         }
     }
