@@ -21,7 +21,6 @@ public class Projectile : MonoBehaviour
             // Si oui, inflige des dégâts
             creature.TakeDamage(damage);
         }
-
         // Le projectile se détruit à l'impact
         Destroy(gameObject);
     }
