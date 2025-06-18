@@ -245,6 +245,7 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: -5593615385577930835, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
     - {fileID: -1113449560275195036, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
+    - {fileID: -2606324590916169242, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
@@ -274,12 +275,42 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2438439730900962331, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
       insertIndex: -1
       addedObject: {fileID: 986385296}
+    - targetCorrespondingSourceObject: {fileID: -5487652715838912770, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 139958056}
   m_SourcePrefab: {fileID: -5645937942226959685, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
 --- !u!4 &122127527 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3842789283960156563, guid: dbd229079a3b575489b6dae6f48c857e, type: 3}
   m_PrefabInstance: {fileID: 1024621242}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &139958052 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -5487652715838912770, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
+  m_PrefabInstance: {fileID: 111282410}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &139958056
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 139958052}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 325039622170336656, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
 --- !u!1 &247016720
 GameObject:
   m_ObjectHideFlags: 0
@@ -960,7 +991,7 @@ MeshCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 5
   m_Convex: 1
   m_CookingOptions: 30
@@ -1448,9 +1479,9 @@ MonoBehaviour:
   leftHandHolder: {fileID: 1688237655}
   firePoint: {fileID: 665661206}
   weaponVisualPrefab: {fileID: 3876852984604355084, guid: cac299d0f3184c94faa2bf5cbb524de1, type: 3}
-  pokeballVisualPrefab: {fileID: 1449260130439301992, guid: 675edbec245c3f44a9d4a199dc60a398, type: 3}
+  pokeballVisualPrefab: {fileID: 6281326974046229708, guid: 6af6a2d9befc3bc468002a7c14daafc5, type: 3}
   weaponProjectilePrefab: {fileID: 3515355259379754945, guid: de6368cac5177d5439a4b82c09dedc1e, type: 3}
-  pokeballProjectilePrefab: {fileID: 6613855032670857236, guid: 7efb5c3ef130e0f40972c16c56dee08e, type: 3}
+  pokeballProjectilePrefab: {fileID: 6281326974046229708, guid: c4c2a0140a8d1424e82fe34ca068b962, type: 3}
   throwForce: 10
   fireRate: 0.5
 --- !u!143 &1504875213
@@ -1807,7 +1838,7 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 97080766}
   m_SourcePrefab: {fileID: 100100000, guid: 13a4205c6e1c38c4e8e8b9e0943f4c28, type: 3}
---- !u!1001 &1641741647567904345
+--- !u!1001 &4128221853913121899
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1815,71 +1846,75 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1821547770665810028, guid: 1366007744819824cbce04fcb549466d, type: 3}
+    - target: {fileID: 1925523959390548759, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
+      propertyPath: m_Radius
+      value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5944758136038579847, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.2
+      value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 1821547770665810028, guid: 1366007744819824cbce04fcb549466d, type: 3}
+    - target: {fileID: 5944758136038579847, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.2
+      value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 1821547770665810028, guid: 1366007744819824cbce04fcb549466d, type: 3}
+    - target: {fileID: 5944758136038579847, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.2
+      value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 1821547770665810028, guid: 1366007744819824cbce04fcb549466d, type: 3}
+    - target: {fileID: 5944758136038579847, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 60.66961
+      value: 62.78411
       objectReference: {fileID: 0}
-    - target: {fileID: 1821547770665810028, guid: 1366007744819824cbce04fcb549466d, type: 3}
+    - target: {fileID: 5944758136038579847, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.62
+      value: 1.424
       objectReference: {fileID: 0}
-    - target: {fileID: 1821547770665810028, guid: 1366007744819824cbce04fcb549466d, type: 3}
+    - target: {fileID: 5944758136038579847, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 105.75
+      value: 109.417
       objectReference: {fileID: 0}
-    - target: {fileID: 1821547770665810028, guid: 1366007744819824cbce04fcb549466d, type: 3}
+    - target: {fileID: 5944758136038579847, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7071068
       objectReference: {fileID: 0}
-    - target: {fileID: 1821547770665810028, guid: 1366007744819824cbce04fcb549466d, type: 3}
+    - target: {fileID: 5944758136038579847, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.7071068
       objectReference: {fileID: 0}
-    - target: {fileID: 1821547770665810028, guid: 1366007744819824cbce04fcb549466d, type: 3}
+    - target: {fileID: 5944758136038579847, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1821547770665810028, guid: 1366007744819824cbce04fcb549466d, type: 3}
+    - target: {fileID: 5944758136038579847, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1821547770665810028, guid: 1366007744819824cbce04fcb549466d, type: 3}
+    - target: {fileID: 5944758136038579847, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1821547770665810028, guid: 1366007744819824cbce04fcb549466d, type: 3}
+    - target: {fileID: 5944758136038579847, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1821547770665810028, guid: 1366007744819824cbce04fcb549466d, type: 3}
+    - target: {fileID: 5944758136038579847, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3217629642885345084, guid: 1366007744819824cbce04fcb549466d, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: edbf09c2e737fa34dab886eb4a3777fa, type: 2}
-    - target: {fileID: 6613855032670857236, guid: 1366007744819824cbce04fcb549466d, type: 3}
+    - target: {fileID: 6281326974046229708, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
       propertyPath: m_Name
+      value: pokeball
+      objectReference: {fileID: 0}
+    - target: {fileID: 6281326974046229708, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
+      propertyPath: m_TagString
       value: PokeballPickup
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 1366007744819824cbce04fcb549466d, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
 --- !u!1001 &9113038690646040189
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2035,7 +2070,7 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 1011466921}
   - {fileID: 1504875210}
-  - {fileID: 1641741647567904345}
+  - {fileID: 4128221853913121899}
   - {fileID: 9113038690646040189}
   - {fileID: 494019351}
   - {fileID: 1851340266}

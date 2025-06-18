@@ -11,8 +11,5 @@ public class PokeballProjectile : MonoBehaviour
             // Si c'est bien une créature, on appelle SA fonction pour tenter la capture
             creature.AttemptToCapture();
         }
-        
-        // Dans tous les cas, la sphère se détruit après avoir touché quelque chose
-        Destroy(gameObject);
     }
 }
