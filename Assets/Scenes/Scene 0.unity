@@ -199,7 +199,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 54.625534
+      value: 46.55
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
       propertyPath: m_LocalPosition.y
@@ -207,7 +207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 108.011
+      value: 107.48
       objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
       propertyPath: m_LocalRotation.w
@@ -244,6 +244,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -6689036041284674117, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
       insertIndex: -1
       addedObject: {fileID: 89810743}
+    - targetCorrespondingSourceObject: {fileID: -3707392600709340309, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 657162507}
     - targetCorrespondingSourceObject: {fileID: -3026113541172527581, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1471492619}
@@ -975,6 +978,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 597410339}
   m_CullTransparentMesh: 1
+--- !u!1 &657162505 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3707392600709340309, guid: 0502ebd9d97180b45b3f5c140cb33b54, type: 3}
+  m_PrefabInstance: {fileID: 111282410}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &657162507
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 657162505}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &665661205
 GameObject:
   m_ObjectHideFlags: 0
