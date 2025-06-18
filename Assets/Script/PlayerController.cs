@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     public Transform firePoint; // LE SEUL ET UNIQUE POINT DE TIR/LANCER
 
     [Header("Item Prefabs")]
+    public GameObject pokeballPickupPrefab;
     public GameObject weaponVisualPrefab;   // Le MODÈLE 3D de l'arme
     public GameObject pokeballVisualPrefab; // Le MODÈLE 3D de la sphère
     public GameObject weaponProjectilePrefab; // La "BALLE" que l'arme tire
@@ -155,10 +156,18 @@ public class PlayerController : MonoBehaviour
 
     void ThrowPokeball()
     {
+        if (pokeballProjectilePrefab == null) return;
+
         GameObject ball = Instantiate(pokeballProjectilePrefab, firePoint.position, firePoint.rotation);
+
+        // --- AJOUTE CETTE LIGNE ---
+        // On dit au projectile qu'on vient de lancer quel est le pickup qu'il devra faire réapparaître.
+        ball.GetComponent<PokeballProjectile>().pokeballPickupPrefab = this.pokeballPickupPrefab;
+        // -------------------------
+
         ball.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * throwForce, ForceMode.Impulse);
 
-        hasPokeballInHand = false; // On n'a plus la sphère en main
-        UpdateHandVisuals(); // On met à jour l'affichage
+        hasPokeballInHand = false;
+        UpdateHandVisuals();
     }
 }
