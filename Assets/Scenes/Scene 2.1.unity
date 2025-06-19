@@ -2148,6 +2148,7 @@ MonoBehaviour:
   pokeballVisualPrefab: {fileID: 6281326974046229708, guid: 6af6a2d9befc3bc468002a7c14daafc5, type: 3}
   weaponProjectilePrefab: {fileID: 3515355259379754945, guid: de6368cac5177d5439a4b82c09dedc1e, type: 3}
   pokeballProjectilePrefab: {fileID: 6281326974046229708, guid: c4c2a0140a8d1424e82fe34ca068b962, type: 3}
+  pokeballPickupPrefab: {fileID: 6281326974046229708, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
   throwForce: 10
   fireRate: 0.5
 --- !u!143 &1933037292

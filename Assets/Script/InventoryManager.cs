@@ -1,65 +1,66 @@
+using Engine.Utils;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : Singleton<InventoryManager>
 {
-    // Instance statique pour un accès facile de n'importe où
-    public static InventoryManager Instance { get; private set; }
+    // Instance statique pour un accï¿½s facile de n'importe oï¿½
+    public new static InventoryManager Instance { get; private set; }
 
-    // État de l'inventaire que nous voulons conserver
+    // ï¿½tat de l'inventaire que nous voulons conserver
     public bool HasWeaponEquipped { get; set; } = false;
     public bool HasPokeballEquipped { get; set; } = false;
 
-    void Awake()
+    protected override void Awake()
     {
-        // Implémentation du Singleton:
+        // Implï¿½mentation du Singleton:
         // S'assure qu'il n'y a qu'une seule instance de cet InventoryManager
         if (Instance == null)
         {
             Instance = this;
-            // C'est la ligne magique ! Empêche cet objet d'être détruit lors des changements de scène.
+            // C'est la ligne magique ! Empï¿½che cet objet d'ï¿½tre dï¿½truit lors des changements de scï¿½ne.
             DontDestroyOnLoad(gameObject);
         }
         else
         {
-            // Si une autre instance existe déjà, détruit cette nouvelle instance
-            // (cela peut arriver si tu as un InventoryManager dans chaque scène)
+            // Si une autre instance existe dï¿½jï¿½, dï¿½truit cette nouvelle instance
+            // (cela peut arriver si tu as un InventoryManager dans chaque scï¿½ne)
             Destroy(gameObject);
         }
     }
 
-    // --- Méthodes pour ajouter/retirer des objets (utilisées par le joueur quand il ramasse) ---
+    // --- Mï¿½thodes pour ajouter/retirer des objets (utilisï¿½es par le joueur quand il ramasse) ---
 
     public void AddWeapon()
     {
         HasWeaponEquipped = true;
-        Debug.Log("Arme ajoutée à l'inventaire.");
+        Debug.Log("Arme ajoutï¿½e ï¿½ l'inventaire.");
     }
 
     public void RemoveWeapon()
     {
         HasWeaponEquipped = false;
-        Debug.Log("Arme retirée de l'inventaire.");
+        Debug.Log("Arme retirï¿½e de l'inventaire.");
     }
 
     public void AddPokeball()
     {
         HasPokeballEquipped = true;
-        Debug.Log("Pokeball ajoutée à l'inventaire.");
+        Debug.Log("Pokeball ajoutï¿½e ï¿½ l'inventaire.");
     }
 
     public void RemovePokeball()
     {
         HasPokeballEquipped = false;
-        Debug.Log("Pokeball retirée de l'inventaire.");
+        Debug.Log("Pokeball retirï¿½e de l'inventaire.");
     }
 
     /// <summary>
-    /// Réinitialise complètement l'inventaire. Utile pour un "Nouvelle Partie" ou "Game Over".
+    /// Rï¿½initialise complï¿½tement l'inventaire. Utile pour un "Nouvelle Partie" ou "Game Over".
     /// </summary>
     public void ResetInventory()
     {
         HasWeaponEquipped = false;
         HasPokeballEquipped = false;
-        Debug.Log("Inventaire réinitialisé.");
+        Debug.Log("Inventaire rï¿½initialisï¿½.");
     }
 }
