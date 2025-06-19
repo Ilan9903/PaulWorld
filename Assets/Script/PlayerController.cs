@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     [Header("Player Movement")]
     public float moveSpeed = 5.0f;
     public float jumpHeight = 2.0f;
-    public float gravity = -9.81f;
+    public float gravity = -20.0f; // Une gravité un peu plus forte est souvent mieux pour le feeling
     private CharacterController controller;
     private Vector3 velocity;
 
@@ -22,55 +22,31 @@ public class PlayerController : MonoBehaviour
     [Header("Equipment & Hands")]
     public Transform rightHandHolder;
     public Transform leftHandHolder;
-    public Transform firePoint;
+    public Transform firePoint; // LE SEUL ET UNIQUE POINT DE TIR/LANCER
 
     [Header("Item Prefabs")]
-    public GameObject weaponVisualPrefab;
-    public GameObject pokeballVisualPrefab;
-    public GameObject weaponProjectilePrefab;
-    public GameObject pokeballProjectilePrefab;
+    public GameObject pokeballPickupPrefab;
+    public GameObject weaponVisualPrefab;   // Le MODÈLE 3D de l'arme
+    public GameObject pokeballVisualPrefab; // Le MODÈLE 3D de la sphère
+    public GameObject weaponProjectilePrefab; // La "BALLE" que l'arme tire
+    public GameObject pokeballProjectilePrefab; // La "SPHÈRE" qui est lancée
 
     [Header("Item Stats")]
     public float throwForce = 15f;
-    public float fireRate = 0.5f;
+    public float fireRate = 0.5f; // Temps en secondes entre chaque tir
     private float nextFireTime = 0f;
 
-    // --- GESTION D'ÉTAT ---
-    private GameObject currentRightHandItemVisual = null;
-    private GameObject currentLeftHandItemVisual = null;
-
-    // Supprime ces variables, l'état est maintenant géré par InventoryManager
-    // private bool hasWeaponEquipped = false;
-    // private bool hasPokeballEquipped = false;
-
+    // --- GESTION D'ÉTAT (privé) ---
+    private GameObject equippedWeaponVisual;
+    private GameObject equippedPokeballVisual;
+    private bool hasWeapon = false;
+    private bool hasPokeballInHand = false;
 
     void Start()
     {
         controller = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        if (playerCamera != null && firePoint != null)
-        {
-            firePoint.SetParent(playerCamera.transform);
-            firePoint.localPosition = new Vector3(0.5f, -0.2f, 1f);
-            firePoint.localRotation = Quaternion.identity;
-        }
-        else
-        {
-            Debug.LogError("PlayerController: playerCamera ou firePoint n'est pas assigné dans l'Inspecteur ou est manquant. Veuillez vérifier !");
-        }
-
-        // MISE À JOUR IMPORTANTE ICI:
-        // Au démarrage de la scène, met à jour les visuels des mains en fonction de l'inventaire persistant
-        if (InventoryManager.Instance != null)
-        {
-            UpdateHandVisuals();
-        }
-        else
-        {
-            Debug.LogError("InventoryManager.Instance est null. Assurez-vous d'avoir un GameObject avec le script InventoryManager dans votre première scène et qu'il est configuré pour DontDestroyOnLoad.");
-        }
     }
 
     void Update()
@@ -79,213 +55,119 @@ public class PlayerController : MonoBehaviour
         HandleInput();
     }
 
-    // --- LOGIQUE DE DÉPLACEMENT ET DE VUE (aucune modification ici) ---
     void HandleMovement()
     {
+        // Gère la gravité
         if (controller.isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
         velocity.y += gravity * Time.deltaTime;
 
+        // Gère le saut (un seul bloc de condition pour isGrounded)
         if (Input.GetButtonDown("Jump") && controller.isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
-
+        
+        // Applique le mouvement (ZQSD) et la gravité/saut
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
-        controller.Move(move * moveSpeed * Time.deltaTime + velocity * Time.deltaTime);
+        controller.Move((move * moveSpeed + velocity) * Time.deltaTime);
 
+        // Gère la vue à la souris
         float lookY = Input.GetAxis("Mouse X") * lookSpeed;
-        rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;
+        rotationX -= Input.GetAxis("Mouse Y") * lookSpeed; // -= pour un contrôle standard
         rotationX = Mathf.Clamp(rotationX, -lookXLimit, lookXLimit);
         playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        transform.rotation *= Quaternion.Euler(0, lookY, 0);
+        transform.Rotate(Vector3.up * lookY);
     }
 
-    // --- LOGIQUE D'ACTIONS (MISE À JOUR) ---
     void HandleInput()
     {
-        // On s'assure que l'InventoryManager existe avant d'essayer d'y accéder
-        if (InventoryManager.Instance == null) return;
-
-        // Logique de l'arme (Clic Gauche)
-        // Utilise InventoryManager.Instance.HasWeaponEquipped
-        if (InventoryManager.Instance.HasWeaponEquipped && Time.time >= nextFireTime)
+        // Rappel: Fire1 = Clic Gauche, Fire2 = Clic Droit
+        if (hasWeapon && hasPokeballInHand) // ÉTAT 3 : DEUX MAINS
         {
-            if (Input.GetButton("Fire1"))
-            {
-                ShootWeapon();
-            }
+            if (Input.GetButton("Fire1") && Time.time >= nextFireTime) { ShootWeapon(); }
+            if (Input.GetButtonDown("Fire2")) { ThrowPokeball(); }
         }
-
-        // Logique de la Pokeball (Clic Droit)
-        // Utilise InventoryManager.Instance.HasPokeballEquipped
-        if (InventoryManager.Instance.HasPokeballEquipped)
+        else if (hasWeapon) // ÉTAT 1 : ARME SEULE
         {
-            if (Input.GetButtonDown("Fire2"))
-            {
-                ThrowPokeball();
-            }
-            // Cas spécial : Si SEULEMENT la pokeball est équipée, utiliser le Clic Gauche
-            else if (!InventoryManager.Instance.HasWeaponEquipped && Input.GetButtonDown("Fire1"))
-            {
-                ThrowPokeball();
-            }
+            if (Input.GetButton("Fire1") && Time.time >= nextFireTime) { ShootWeapon(); }
+        }
+        else if (hasPokeballInHand) // ÉTAT 2 : SPHÈRE SEULE
+        {
+            if (Input.GetButtonDown("Fire1")) { ThrowPokeball(); }
         }
     }
 
-    // --- LOGIQUE DE RAMASSAGE (MISE À JOUR) ---
     private void OnTriggerEnter(Collider other)
     {
-        // On s'assure que l'InventoryManager existe
-        if (InventoryManager.Instance == null) return;
-
-        if (other.CompareTag("WeaponPickup") && !InventoryManager.Instance.HasWeaponEquipped)
+        if (other.CompareTag("WeaponPickup") && !hasWeapon)
         {
+            hasWeapon = true;
             Destroy(other.gameObject);
-            InventoryManager.Instance.AddWeapon(); // Informe l'inventaire qu'une arme est ajoutée
-            UpdateHandVisuals();
+            UpdateHandVisuals(); // Appelle le chef d'orchestre
         }
-        else if (other.CompareTag("PokeballPickup") && !InventoryManager.Instance.HasPokeballEquipped)
+        else if (other.CompareTag("PokeballPickup") && !hasPokeballInHand)
         {
+            hasPokeballInHand = true;
             Destroy(other.gameObject);
-            InventoryManager.Instance.AddPokeball(); // Informe l'inventaire qu'une pokeball est ajoutée
-            UpdateHandVisuals();
+            UpdateHandVisuals(); // Appelle le chef d'orchestre
         }
     }
 
-    // --- FONCTION CENTRALE "CHEF D'ORCHESTRE" (MISE À JOUR) ---
+    // --- FONCTION CENTRALE "CHEF D'ORCHESTRE" ---
     void UpdateHandVisuals()
     {
-        // On s'assure que l'InventoryManager existe avant d'y accéder
-        if (InventoryManager.Instance == null) return;
+        // 1. On détruit les anciens objets pour nettoyer les mains
+        if (equippedWeaponVisual != null) Destroy(equippedWeaponVisual);
+        if (equippedPokeballVisual != null) Destroy(equippedPokeballVisual);
 
-        // Dégager les mains actuelles
-        if (currentRightHandItemVisual != null)
+        // 2. On regarde l'état actuel et on recrée les bons objets aux bons endroits
+        if (hasWeapon && hasPokeballInHand) // ÉTAT 3 : Les deux
         {
-            Destroy(currentRightHandItemVisual);
-            currentRightHandItemVisual = null;
+            equippedWeaponVisual = Instantiate(weaponVisualPrefab, leftHandHolder);
+            equippedPokeballVisual = Instantiate(pokeballVisualPrefab, rightHandHolder);
+            firePoint.SetParent(leftHandHolder, false); // Le firePoint est sur l'arme
         }
-        if (currentLeftHandItemVisual != null)
+        else if (hasWeapon) // ÉTAT 1 : Arme seule
         {
-            Destroy(currentLeftHandItemVisual);
-            currentLeftHandItemVisual = null;
+            equippedWeaponVisual = Instantiate(weaponVisualPrefab, rightHandHolder);
+            firePoint.SetParent(rightHandHolder, false); // Le firePoint est sur l'arme
         }
-
-        // Décider quoi équiper et où, en se basant sur l'InventoryManager
-        bool hasWeapon = InventoryManager.Instance.HasWeaponEquipped;
-        bool hasPokeball = InventoryManager.Instance.HasPokeballEquipped;
-
-        if (hasWeapon && hasPokeball)
+        else if (hasPokeballInHand) // ÉTAT 2 : Sphère seule
         {
-            currentLeftHandItemVisual = Instantiate(weaponVisualPrefab, leftHandHolder);
-            currentLeftHandItemVisual.tag = "Weapon";
-            currentLeftHandItemVisual.transform.localPosition = Vector3.zero;
-            currentLeftHandItemVisual.transform.localRotation = Quaternion.identity;
-
-            currentRightHandItemVisual = Instantiate(pokeballVisualPrefab, rightHandHolder);
-            currentRightHandItemVisual.tag = "Pokeball";
-            currentRightHandItemVisual.transform.localPosition = Vector3.zero;
-            currentRightHandItemVisual.transform.localRotation = Quaternion.identity;
-
-            if (firePoint != null)
-            {
-                firePoint.localPosition = leftHandHolder.localPosition + new Vector3(0.2f, 0, 0.5f);
-                firePoint.localRotation = leftHandHolder.localRotation;
-            }
+            equippedPokeballVisual = Instantiate(pokeballVisualPrefab, rightHandHolder);
+            firePoint.SetParent(rightHandHolder, false); // Le firePoint est sur la sphère
         }
-        else if (hasWeapon && !hasPokeball)
-        {
-            currentRightHandItemVisual = Instantiate(weaponVisualPrefab, rightHandHolder);
-            currentRightHandItemVisual.tag = "Weapon";
-            currentRightHandItemVisual.transform.localPosition = Vector3.zero;
-            currentRightHandItemVisual.transform.localRotation = Quaternion.identity;
-
-            if (firePoint != null)
-            {
-                firePoint.localPosition = rightHandHolder.localPosition + new Vector3(-0.2f, 0, 0.5f);
-                firePoint.localRotation = rightHandHolder.localRotation;
-            }
-        }
-        else if (!hasWeapon && hasPokeball)
-        {
-            currentRightHandItemVisual = Instantiate(pokeballVisualPrefab, rightHandHolder);
-            currentRightHandItemVisual.tag = "Pokeball";
-            currentRightHandItemVisual.transform.localPosition = Vector3.zero;
-            currentRightHandItemVisual.transform.localRotation = Quaternion.identity;
-
-            if (firePoint != null)
-            {
-                firePoint.localPosition = rightHandHolder.localPosition + new Vector3(0, 0, 0.3f);
-                firePoint.localRotation = rightHandHolder.localRotation;
-            }
-        }
-        else // Aucun objet équipé
-        {
-            if (firePoint != null)
-            {
-                firePoint.localPosition = new Vector3(0.5f, -0.2f, 1f);
-                firePoint.localRotation = Quaternion.identity;
-            }
-        }
+        
+        // 3. On réinitialise la position locale du firePoint pour qu'il soit bien au centre de la main
+        firePoint.localPosition = Vector3.zero;
+        firePoint.localRotation = Quaternion.identity;
     }
 
-    // --- Fonctions d'action (MISE À JOUR pour ThrowPokeball) ---
     void ShootWeapon()
     {
-        // Utilise InventoryManager.Instance.HasWeaponEquipped
-        if (InventoryManager.Instance != null && InventoryManager.Instance.HasWeaponEquipped)
-        {
-            if (firePoint == null)
-            {
-                Debug.LogError("ShootWeapon: firePoint est null. Impossible de tirer. Vérifiez son assignation dans l'Inspecteur !");
-                return;
-            }
-            if (weaponProjectilePrefab == null)
-            {
-                Debug.LogError("ShootWeapon: weaponProjectilePrefab n'est pas assigné !");
-                return;
-            }
-
-            Instantiate(weaponProjectilePrefab, firePoint.position, firePoint.rotation);
-            nextFireTime = Time.time + fireRate;
-        }
+        Instantiate(weaponProjectilePrefab, firePoint.position, firePoint.rotation);
+        nextFireTime = Time.time + fireRate; // Applique le délai
     }
 
     void ThrowPokeball()
     {
-        // Utilise InventoryManager.Instance.HasPokeballEquipped
-        if (InventoryManager.Instance != null && InventoryManager.Instance.HasPokeballEquipped)
-        {
-            if (firePoint == null)
-            {
-                Debug.LogError("ThrowPokeball: firePoint est null. Impossible de lancer. Vérifiez son assignation dans l'Inspecteur !");
-                return;
-            }
-            if (pokeballProjectilePrefab == null)
-            {
-                Debug.LogError("ThrowPokeball: pokeballProjectilePrefab n'est pas assigné !");
-                return;
-            }
+        if (pokeballProjectilePrefab == null) return;
 
-            GameObject ball = Instantiate(pokeballProjectilePrefab, firePoint.position, firePoint.rotation);
-            Rigidbody rb = ball.GetComponent<Rigidbody>();
-            if (rb == null)
-            {
-                Debug.LogError("Le préfabriqué de la Pokeball Projectile a besoin d'un composant Rigidbody !");
-                Destroy(ball);
-                return;
-            }
+        GameObject ball = Instantiate(pokeballProjectilePrefab, firePoint.position, firePoint.rotation);
 
-            rb.AddForce(playerCamera.transform.forward * throwForce, ForceMode.Impulse);
+        // --- AJOUTE CETTE LIGNE ---
+        // On dit au projectile qu'on vient de lancer quel est le pickup qu'il devra faire réapparaître.
+        ball.GetComponent<PokeballProjectile>().pokeballPickupPrefab = this.pokeballPickupPrefab;
+        // -------------------------
 
-            // MISE À JOUR IMPORTANTE ICI:
-            // Informe l'inventaire que la pokeball n'est plus "en main" (car lancée)
-            InventoryManager.Instance.RemovePokeball();
-            UpdateHandVisuals(); // Met à jour l'affichage des mains
-        }
+        ball.GetComponent<Rigidbody>().AddForce(playerCamera.transform.forward * throwForce, ForceMode.Impulse);
+
+        hasPokeballInHand = false;
+        UpdateHandVisuals();
     }
 }
