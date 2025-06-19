@@ -12,6 +12,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PokeballinHand_Prefab
       objectReference: {fileID: 0}
+    - target: {fileID: -6689036041284674117, guid: b914bf0be5a27154facbb926e1a66aba, type: 3}
+      propertyPath: m_TagString
+      value: Pokeball
+      objectReference: {fileID: 0}
     - target: {fileID: 2774220344278030320, guid: b914bf0be5a27154facbb926e1a66aba, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.3
@@ -98,6 +102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c12f34d1979a2d94587752f75b4510b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pokeballPickupPrefab: {fileID: 0}
+  timeBeforeRespawn: 2
 --- !u!135 &-7321336565271536312
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -158,3 +164,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c12f34d1979a2d94587752f75b4510b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pokeballPickupPrefab: {fileID: 0}
+  timeBeforeRespawn: 2
