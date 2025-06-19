@@ -1166,7 +1166,6 @@ MonoBehaviour:
   rightHandHolder: {fileID: 611869524}
   leftHandHolder: {fileID: 1600921508}
   firePoint: {fileID: 2126283070}
-  pokeballPickupPrefab: {fileID: 6281326974046229708, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
   weaponVisualPrefab: {fileID: 3876852984604355084, guid: cac299d0f3184c94faa2bf5cbb524de1, type: 3}
   pokeballVisualPrefab: {fileID: 6281326974046229708, guid: 6af6a2d9befc3bc468002a7c14daafc5, type: 3}
   weaponProjectilePrefab: {fileID: 3515355259379754945, guid: de6368cac5177d5439a4b82c09dedc1e, type: 3}
@@ -1413,7 +1412,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95db081b13d02b4499e34972ca827fef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: Scene 2
+  sceneToLoad: Scene 2.1
   playerTag: Player
 --- !u!1001 &1088060898
 PrefabInstance:

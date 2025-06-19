@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement; // Don't forget this namespace!
 public class ChangeScene : MonoBehaviour
 {
     [Tooltip("The name or index of the scene to load.")]
-    public string sceneToLoad = "Scene 2"; // You can set this in the Inspector to "1" or "Scene1"
+    public string sceneToLoad = "Scene 2.1"; // You can set this in the Inspector to "1" or "Scene1"
 
     [Tooltip("The tag of the player object that can trigger the scene change.")]
     public string playerTag = "Player";
