@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
     public GameObject pokeballVisualPrefab;
     public GameObject weaponProjectilePrefab;
     public GameObject pokeballProjectilePrefab;
+    public GameObject pokeballPickupPrefab;
 
     [Header("Item Stats")]
     public float throwForce = 15f;
@@ -272,6 +273,7 @@ public class PlayerController : MonoBehaviour
             }
 
             GameObject ball = Instantiate(pokeballProjectilePrefab, firePoint.position, firePoint.rotation);
+            ball.GetComponent<PokeballProjectile>().pokeballPickupPrefab = this.pokeballPickupPrefab;
             Rigidbody rb = ball.GetComponent<Rigidbody>();
             if (rb == null)
             {
