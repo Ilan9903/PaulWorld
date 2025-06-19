@@ -372,7 +372,7 @@ Transform:
   m_GameObject: {fileID: 159041230}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 71.75523, y: 0, z: 103.18781}
+  m_LocalPosition: {x: 67.87, y: 0.47, z: 98.349}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1170,6 +1170,7 @@ MonoBehaviour:
   pokeballVisualPrefab: {fileID: 6281326974046229708, guid: 6af6a2d9befc3bc468002a7c14daafc5, type: 3}
   weaponProjectilePrefab: {fileID: 3515355259379754945, guid: de6368cac5177d5439a4b82c09dedc1e, type: 3}
   pokeballProjectilePrefab: {fileID: 6281326974046229708, guid: c4c2a0140a8d1424e82fe34ca068b962, type: 3}
+  pokeballPickupPrefab: {fileID: 6281326974046229708, guid: 499b3ac59d64a5842b88417e3f58debc, type: 3}
   throwForce: 10
   fireRate: 0.5
 --- !u!143 &644591751
