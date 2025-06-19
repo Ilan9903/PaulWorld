@@ -43,6 +43,8 @@ public class PokemonController : MonoBehaviour // CONSERVÉ : Ton nom de classe
         // MODIFIÉ : Toute la logique de déplacement est remplacée par celle-ci
         timer += Time.deltaTime;
 
+        healthSlider.transform.LookAt(Camera.main.transform);
+
         if (isWandering)
         {
             // Si le temps de marche est écoulé, on fait une pause
