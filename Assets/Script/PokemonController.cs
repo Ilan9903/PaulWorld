@@ -86,6 +86,7 @@ public class PokemonController : MonoBehaviour // CONSERVÉ : Ton nom de classe
         if (currentHealth <= 30)
         {
             Debug.Log("Capture Réussie !");
+            AudioManager.Instance.PlaySound(AudioManager.Instance.captureSuccessSound);
             // La ligne ci-dessous sera pour plus tard, quand PlayerStats existera
             // FindObjectOfType<PlayerStats>().AddXp(50); 
             Destroy(gameObject);
@@ -93,6 +94,7 @@ public class PokemonController : MonoBehaviour // CONSERVÉ : Ton nom de classe
         else
         {
             Debug.Log("Capture Échouée ! La créature est encore trop forte (" + currentHealth + " PV).");
+            AudioManager.Instance.PlaySound(AudioManager.Instance.captureFailSound);
         }
     }
 

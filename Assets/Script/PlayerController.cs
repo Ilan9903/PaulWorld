@@ -92,6 +92,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && controller.isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            AudioManager.Instance.PlaySound(AudioManager.Instance.jumpSound);
         }
 
         float moveX = Input.GetAxis("Horizontal");
@@ -147,12 +148,14 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("WeaponPickup") && !InventoryManager.Instance.HasWeaponEquipped)
         {
             Destroy(other.gameObject);
+            AudioManager.Instance.PlaySound(AudioManager.Instance.pickupSound);
             InventoryManager.Instance.AddWeapon(); // Informe l'inventaire qu'une arme est ajoutée
             UpdateHandVisuals();
         }
         else if (other.CompareTag("PokeballPickup") && !InventoryManager.Instance.HasPokeballEquipped)
         {
             Destroy(other.gameObject);
+            AudioManager.Instance.PlaySound(AudioManager.Instance.pickupSound);
             InventoryManager.Instance.AddPokeball(); // Informe l'inventaire qu'une pokeball est ajoutée
             UpdateHandVisuals();
         }
@@ -251,6 +254,7 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
+            AudioManager.Instance.PlaySound(AudioManager.Instance.weaponShootSound);
             Instantiate(weaponProjectilePrefab, firePoint.position, firePoint.rotation);
             nextFireTime = Time.time + fireRate;
         }
@@ -272,6 +276,7 @@ public class PlayerController : MonoBehaviour
                 return;
             }
 
+            AudioManager.Instance.PlaySound(AudioManager.Instance.weaponShootSound);
             GameObject ball = Instantiate(pokeballProjectilePrefab, firePoint.position, firePoint.rotation);
             ball.GetComponent<PokeballProjectile>().pokeballPickupPrefab = this.pokeballPickupPrefab;
             Rigidbody rb = ball.GetComponent<Rigidbody>();

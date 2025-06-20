@@ -14,6 +14,8 @@ public class PokeballProjectile : MonoBehaviour
         if (hasHit) return;
         hasHit = true;
 
+        AudioManager.Instance.PlaySound(AudioManager.Instance.impactSound);
+
         PokemonController creature = collision.gameObject.GetComponent<PokemonController>();
         if (creature != null)
         {

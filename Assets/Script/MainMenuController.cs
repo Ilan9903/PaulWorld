@@ -9,6 +9,8 @@ public class MainMenuController : MonoBehaviour
     // Cette fonction sera appelée par le bouton "JOUER"
     public void PlayGame()
     {
+        AudioManager.Instance.PlaySound(AudioManager.Instance.uiClickPlay);
+        AudioManager.Instance.PlayMusic(AudioManager.Instance.gameMusic);
         // Charge la scène de jeu
         SceneManager.LoadScene(gameSceneName);
     }
@@ -18,8 +20,17 @@ public class MainMenuController : MonoBehaviour
     {
         // Ce message s'affichera dans la console de Unity
         Debug.Log("Le joueur a quitté le jeu.");
-        
+        AudioManager.Instance.PlaySound(AudioManager.Instance.uiClickQuit);
         // Cette commande ne fonctionne que dans un jeu "buildé" (exporté), pas dans l'éditeur.
         Application.Quit();
+    }
+
+    void Start()
+    {
+        // On vérifie que l'AudioManager existe avant de jouer de la musique
+        if (AudioManager.Instance != null)
+        {
+            AudioManager.Instance.PlayMusic(AudioManager.Instance.mainMenuMusic);
+        }
     }
 }
